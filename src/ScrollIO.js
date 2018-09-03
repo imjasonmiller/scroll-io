@@ -69,15 +69,13 @@ class ScrollIO {
     }
 
     thresholdRange({ steps = 0, min = 0, max = 1 }) {
-        const thresholds = [];
+        const thresholds = [min];
 
         for (let i = 1; i <= steps; i++) {
             const range = max - min;
             const step = i / steps;
-
             thresholds.push(min + step * range);
         }
-        thresholds.push(min);
 
         return thresholds;
     }
