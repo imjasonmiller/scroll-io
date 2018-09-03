@@ -31,7 +31,7 @@ const observer = new ScrollIO({
 
 | Default | Type   |
 | ------- | ------ |
-| `null`  | String | Element | NodeList | Array |
+| `null`  | String \| Element \| NodeList \| Array |
 
 ### `threshold`
 
