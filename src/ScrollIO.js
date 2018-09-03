@@ -22,8 +22,8 @@ class ScrollIO {
         return elements.map((elem, index) => {
             elem[this.namespace] = {
                 index,
-                previousY: 0,
-                previousRatio: 0,
+                prevY: 0,
+                prevRatio: 0,
             };
 
             return elem;
@@ -50,21 +50,21 @@ class ScrollIO {
                 state: '',
             };
 
-            const currentY = entry.boundingClientRect.y;
-            const currentRatio = entry.intersectionRatio;
+            const currY = entry.boundingClientRect.y;
+            const currRatio = entry.intersectionRatio;
 
-            const previousY = entry.target[this.namespace].previousY;
-            const previousRatio = entry.target[this.namespace].previousRatio;
+            const prevY = entry.target[this.namespace].prevY;
+            const prevRatio = entry.target[this.namespace].prevRatio;
 
             if (entry.isIntersecting) {
-                data.scroll = currentY < previousY ? 'down' : 'up';
-                data.state = currentRatio > previousRatio ? 'enter' : 'leave';
+                data.scroll = currY < prevY ? 'down' : 'up';
+                data.state = currRatio > prevRatio ? 'enter' : 'leave';
 
                 this.onIntersect(data, entry, observer);
             }
 
-            entry.target[this.namespace].previousY = currentY;
-            entry.target[this.namespace].previousRatio = currentRatio;
+            entry.target[this.namespace].prevY = currY;
+            entry.target[this.namespace].prevRatio = currRatio;
         });
     }
 
