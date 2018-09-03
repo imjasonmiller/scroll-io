@@ -20,12 +20,7 @@ class ScrollIO {
 
     wrapElements(elements) {
         return elements.map((elem, index) => {
-            elem[this.namespace] = {
-                index,
-                prevY: 0,
-                prevRatio: 0,
-            };
-
+            elem[this.namespace] = { index, prevY: 0, prevRatio: 0 };
             return elem;
         });
     }
