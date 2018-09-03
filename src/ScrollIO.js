@@ -1,5 +1,5 @@
-class Checkpoint {
-    constructor({ elements, threshold, onIntersect, namespace = '__checkpoint' } = {}) {
+class ScrollIO {
+    constructor({ elements, threshold, onIntersect, namespace = '__scrollio' } = {}) {
         this.namespace = namespace;
         this.elements = this.wrapElements(this.getElements(elements));
 
@@ -83,4 +83,4 @@ class Checkpoint {
     }
 }
 
-export default Checkpoint;
+export default ScrollIO;

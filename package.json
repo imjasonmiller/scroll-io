@@ -1,12 +1,13 @@
 {
-  "name": "checkpoint",
-  "version": "1.0.0",
-  "description": "",
+  "name": "scroll-io",
+  "version": "0.0.0",
+  "description": "Wrapper for IntersectionObserver that returns the scroll direction and state",
   "main": "index.js",
+  "bugs": "https://github.com/imjasonmiller/scroll-io/issues",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+  "keywords": ["intersectionobserver", "scroll", "direction", "scrollio", "scroll-io"],
+  "author": "Jason Miller <hello@jasonmiller.nl> (https://jasonmiller.nl/)",
+  "license": "MIT"
 }
