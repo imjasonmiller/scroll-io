@@ -2,8 +2,6 @@
 
 Wrapper for IntersectionObserver that returns the scroll direction and state
 
----
-
 ```js
 import ScrollIO from 'ScrollIO';
 
