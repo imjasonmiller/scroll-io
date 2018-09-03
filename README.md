@@ -2,13 +2,19 @@
 
 Wrapper for IntersectionObserver that returns the scroll direction and state
 
+```
+npm i @imjasonmiller/scroll-io
+```
+
+### Example 
+
 ```js
 import ScrollIO from '@imjasonmiller/scroll-io';
 
 // Cache all '.captions', each a child of '.feature'
 const captions = document.querySelectorAll('.caption');
 
-const handleIntersect = ({ index, state, scroll }, entry, observer) => {
+const handleIntersect = ({ index, state, scroll }, entry) => {
     const ratio = entry.intersectionRatio;
 
     if (state === 'enter' && scroll === 'down' ||
