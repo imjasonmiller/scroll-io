@@ -3,7 +3,7 @@
 Wrapper for IntersectionObserver that returns the scroll direction and state
 
 ```js
-import ScrollIO from 'scroll-io';
+import ScrollIO from '@imjasonmiller/scroll-io';
 
 // Cache all '.captions', each a child of '.feature'
 const captions = document.querySelectorAll('.caption');
