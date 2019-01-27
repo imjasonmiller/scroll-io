@@ -1,5 +1,10 @@
 class ScrollIO {
-    constructor({ elements, threshold, onIntersect, namespace = '__scrollio' } = {}) {
+    constructor({
+        elements,
+        threshold,
+        onIntersect,
+        namespace = '__scrollio',
+    } = {}) {
         this.namespace = namespace;
         this.elements = this.wrapElements(this.getElements(elements));
 
@@ -14,8 +19,8 @@ class ScrollIO {
     }
 
     disconnect() {
-        this.observer.disconnect()
-        this.elements = undefined
+        this.observer.disconnect();
+        this.elements = undefined;
     }
 
     wrapElements(elements) {
@@ -33,7 +38,9 @@ class ScrollIO {
 
         // String or NodeList
         return Array.from(
-            typeof elements === 'string' ? document.querySelectorAll(elements) : elements
+            typeof elements === 'string'
+                ? document.querySelectorAll(elements)
+                : elements
         );
     }
 
@@ -51,12 +58,10 @@ class ScrollIO {
             const prevY = entry.target[this.namespace].prevY;
             const prevRatio = entry.target[this.namespace].prevRatio;
 
-            if (entry.isIntersecting) {
-                data.scroll = currY < prevY ? 'down' : 'up';
-                data.state = currRatio > prevRatio ? 'enter' : 'leave';
+            data.scroll = currY < prevY ? 'down' : 'up';
+            data.state = currRatio > prevRatio ? 'enter' : 'leave';
 
-                this.onIntersect(data, entry, observer);
-            }
+            this.onIntersect(data, entry, observer);
 
             entry.target[this.namespace].prevY = currY;
             entry.target[this.namespace].prevRatio = currRatio;
