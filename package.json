@@ -1,7 +1,7 @@
 {
     "name": "@imjasonmiller/scroll-io",
     "version": "0.0.2",
-    "description": "Wrapper for IntersectionObserver that returns the scroll direction and state",
+    "description": "Wrapper for IntersectionObserver that returns the scroll direction",
     "main": "index.js",
     "bugs": "https://github.com/imjasonmiller/scroll-io/issues",
     "scripts": {
@@ -14,6 +14,6 @@
         "scrollio",
         "scroll-io"
     ],
-    "author": "Jason Miller <hello@jasonmiller.nl> (https://jasonmiller.nl/)",
+    "author": "Jason Miller <contact@jasonmiller.nl> (https://jasonmiller.nl/)",
     "license": "MIT"
 }
