@@ -15,5 +15,8 @@
         "scroll-io"
     ],
     "author": "Jason Miller <contact@jasonmiller.nl> (https://jasonmiller.nl/)",
-    "license": "MIT"
+    "license": "MIT",
+    "devDependencies": {
+        "typescript": "^3.6.3"
+    }
 }
