@@ -1,0 +1,29 @@
+:root {
+    --background: #282a37;
+    --green: #00da6f;
+    --red: #ff4b4e;
+}
+
+html,
+body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+}
+
+body {
+    background: var(--background);
+}
+
+.element {
+    width: 100px;
+    height: 100px;
+    margin: 1000px auto;
+}
+
+.element--red {
+    background: var(--red);
+}
+.element--green {
+    background: var(--green);
+}

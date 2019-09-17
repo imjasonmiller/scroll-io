@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>Test ScrollIO</title>
+    </head>
+    <script type="text/javascript">
+        const exports = {}
+    </script>
+    <script type="text/javascript" src="../../dist/index.js"></script>
+    <link rel="stylesheet" href="./style.css"></link>
+    <body>
+    <div class="element element--red"></div>
+    <script type="text/javascript">
+        const handler = ({ enterDown }, entry) => {
+                if (enterDown) {
+                    entry.target.classList.replace(
+                        "element--red", "element--green"
+                    )
+                }
+            }
+
+            new ScrollIO(".element", handler)
+        </script>
+    </body>
+</html>
+
