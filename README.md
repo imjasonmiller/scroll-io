@@ -6,7 +6,7 @@ Wrapper for IntersectionObserver that returns the scroll direction and state
 npm i @imjasonmiller/scroll-io
 ```
 
-### Example
+## Example
 
 ```ts
 import { ScrollIO } from '@imjasonmiller/scroll-io';
@@ -31,26 +31,26 @@ const observer = new ScrollIO('.feature', handler, {
 ## Syntax
 
 ```ts
-const observer = new ScrollIO(selection,handler[, options]);
+const observer = new ScrollIO(selection,callback[, options]);
 
 ```
 ### Parameters
 
 #### `selection`
 
-| Default | Type   |
-| ------- | ------ |
-| `null`  | String \| Element \| NodeListOf<Element> \|
+| Default | Type                                       |
+| ------- | ------------------------------------------ |
+| `null`  | String \| Element \| NodeListOf\<Element\> |
 
-If passed a string, `document.querySelector(string)` will be used.
+String expects a selection string, e.g. `.element` or `#element`.
 
-#### `handler`
+#### `callback`
 
 | Default | Type     |
 | ------- | -------- |
 | `null`  | Function |
 
-Handler that is called on each intersect and receives the following arguments:
+Callback that is called on each intersection and receives the following arguments:
 
 ```ts
 {
@@ -63,7 +63,7 @@ Handler that is called on each intersect and receives the following arguments:
 entry: IntersectionObserverEntry,
 ```
 
-If needed, the `index` for each added element allows you to quickly access the children of said element by caching them outside of the handler, preventing unnecessary `querySelector` calls.
+If needed, the `index` for each added element allows you to quickly access the children if cached outside of the handler, preventing unnecessary `querySelector` calls.
 
 #### `options`
 
@@ -87,7 +87,7 @@ If you want to pass a single threshold value, you only have to pass `min`.
 | ------------ | ------ |
 | `__scrollio` | String |
 
-Each `HTMLElement` passed to `elements` will have a property attached to it in order to keep track of the `index` and scroll directions. The default namespace can be changed if desired.
+Each `HTMLElement` passed to `selection` will have a property attached to it in order to keep track of the `index` and scroll directions. The default `namespace` can be changed if desired.
 
 ### Methods
 
