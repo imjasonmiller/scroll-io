@@ -36,8 +36,14 @@ type Options = {
     namespace: string;
 };
 
-type Handler = (
-    data: {
+export type Handler = (
+    {
+        index,
+        enterUp,
+        leaveUp,
+        enterDown,
+        leaveDown,
+    }: {
         index: number;
         enterUp: boolean;
         leaveUp: boolean;
