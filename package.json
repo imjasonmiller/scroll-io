@@ -1,6 +1,6 @@
 {
     "name": "@imjasonmiller/scroll-io",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Wrapper for IntersectionObserver that returns the scroll direction",
     "main": "./dist/index.js",
     "homepage": "https://github.com/imjasonmiller/scroll-io#readme",
