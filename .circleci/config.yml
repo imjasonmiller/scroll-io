@@ -3,37 +3,38 @@ version: 2
 defaults: &defaults
     working_directory: ~/repo
     docker:
-        - image: cypress/base:12
-        environment:
-            # Enable colors in the output
-            TERM: xterm
+        - image: cypress/base:10
+    environment:
+        # Enable colors in the output
+        TERM: xterm
+
 jobs:
     test:
         <<: *defaults
-    steps:
-        - checkout
-        - restore_cache:
-            keys:
-            - v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
-            - v1-deps-{{ .Branch }}
-            - v1-deps
+        steps:
+            - checkout
+            - restore_cache:
+                keys:
+                - v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
+                - v1-deps-{{ .Branch }}
+                - v1-deps
 
-        - run: npm ci
-        - run: npx tsc
-        - run:
-            name: Run tests
-            command: npx cypress run
-            environment:
-                CYPRESS_CRASH_REPORTS: 0
+            - run: npm ci
+            - run: npx tsc
+            - run:
+                name: Run tests
+                command: npx cypress run
+                environment:
+                    CYPRESS_CRASH_REPORTS: 0
 
-        - save_cache:
-            paths:
-                - node_modules
-            key: v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
+            - save_cache:
+                paths:
+                    - node_modules
+                key: v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
 
-        - persist_to_workspace:
-            root: ~/repo
-            paths: .
+            - persist_to_workspace:
+                root: ~/repo
+                paths: .
 
     deploy:
         <<: *defaults
@@ -63,6 +64,7 @@ workflows:
                     tags:
                         only: /^v.*/
                     branches:
+                        only: master
                         ignore: /.*/
 
 
