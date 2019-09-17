@@ -48,7 +48,7 @@ type Handler = (
     observer: IntersectionObserver
 ) => void;
 
-export class ScrollObserver {
+export class ScrollIO {
     entries: WrappedElement[];
     options: Options;
     observer: IntersectionObserver;
