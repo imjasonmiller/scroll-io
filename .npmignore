@@ -1,0 +1,10 @@
+*.log
+.gitignore
+.circleci/
+.editorconfig
+.eslintrc.json
+.prettierrc
+lib/
+cypress/
+cypress.json
+tsconfig.json
