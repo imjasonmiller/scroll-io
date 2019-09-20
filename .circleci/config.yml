@@ -36,30 +36,34 @@ jobs:
                 root: ~/repo
                 paths: .
 
-    deploy:
+    publish:
         <<: *defaults
         steps:
             - attach_workspace:
                 at: ~/repo
             - run:
-                name: Publish package
+                name: Publish to NPM
                 command: |
                     npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
                     npm publish
 
 workflows:
     version: 2
-    test-deploy:
+    test-publish:
         jobs:
             - test:
                 filters:
+                    branches:
+                        only: master
                     tags:
                         only: /^v[0-9]+(\.[0-9]+).*/
 
-            - deploy:
+            - publish:
                 requires:
                     - test
                 filters:
+                    branches:
+                        only: master
                     tags:
                         only: /^v[0-9]+(\.[0-9]+).*/
 
