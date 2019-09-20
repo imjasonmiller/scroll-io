@@ -1,24 +1,29 @@
-version: 2
+version: 2.1
 
-defaults: &defaults
-    working_directory: ~/repo
-    docker:
-        - image: cypress/base:10
-    environment:
-        # Enable colors in the output
-        TERM: xterm
+executors:
+    cypress-base-10:
+        docker:
+            - image: cypress/base:10
+        working_directory: ~/repo
+
+references:
+    filter_version_tag: &filter_version_tag
+        tags:
+            only:
+                - /^v\d+(\.\d+).*/
+        branches:
+            ignore: /.*/
 
 jobs:
     test:
-        <<: *defaults
+        executor: cypress-base-10
         steps:
             - checkout
             - restore_cache:
                 keys:
-                - v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
-                - v1-deps-{{ .Branch }}
-                - v1-deps
-
+                    - v1-deps-{{ .Branch }}-{{ checksum "package.json" }}
+                    - v1-deps-{{ .Branch }}
+                    - v1-deps
             - run: npm ci
             - run: npx tsc
             - run:
@@ -36,30 +41,32 @@ jobs:
                 root: ~/repo
                 paths: .
 
-    deploy:
-        <<: *defaults
+    publish:
+        executor: cypress-base-10
         steps:
             - attach_workspace:
                 at: ~/repo
             - run:
-                name: Publish package
+                name: Publish to npm
                 command: |
                     npm set //registry.npmjs.org/:_authToken=$NPM_TOKEN
                     npm publish
 
 workflows:
     version: 2
-    test-deploy:
+
+    build-test:
+        jobs:
+            - test
+
+    build-test-publish:
         jobs:
             - test:
                 filters:
-                    tags:
-                        only: /^v[0-9]+(\.[0-9]+).*/
-
-            - deploy:
+                    <<: *filter_version_tag
+            - publish:
                 requires:
                     - test
                 filters:
-                    tags:
-                        only: /^v[0-9]+(\.[0-9]+).*/
+                    <<: *filter_version_tag
 
