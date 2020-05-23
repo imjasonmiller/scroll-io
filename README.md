@@ -16,7 +16,7 @@ import { ScrollIO } from '@imjasonmiller/scroll-io';
 // Cache '.child' elements of '.selection'
 const children = document.querySelectorAll('.selection .child');
 
-const callback = ({ enterDown, leaveUp }, entry) => {
+const callback = ({ index, enterDown, leaveUp }, entry) => {
     const ratio = entry.intersectionRatio;
 
     if (enterDown || leaveUp) {
