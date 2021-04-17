@@ -73,6 +73,7 @@ export class ScrollIO {
     };
     this.observer = new IntersectionObserver(this.handleIntersect, {
       threshold: this.getThresholds(this.options.range),
+      rootMargin: this.options.rootMargin,
     });
 
     this.entries = wrapElements(
