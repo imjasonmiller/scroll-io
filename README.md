@@ -92,6 +92,14 @@ If you would like to limit the range, set `min` or/and `max`.
 
 If you want to pass a single threshold value, you only have to pass `min`.
 
+#### `rootMargin`
+
+[`IntersectionObserver.rootMargin`](https://developer.mozilla.org/en-US/docs/Web/API/IntersectionObserver/rootMargin), which allows one to offset the bounding box.
+
+| Default                         | Type   |
+| ------------------------------- | ------ |
+| `0px 0px 0px 0px`               | string |
+
 #### `namespace`
 
 | Default     | Type   |

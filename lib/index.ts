@@ -1,122 +1,128 @@
 function getSelection(
-    selection: string | Element | NodeListOf<Element>
+  selection: string | Element | NodeListOf<Element>
 ): Element[] {
-    if (selection instanceof Element) {
-        return [selection];
-    }
+  if (selection instanceof Element) {
+    return [selection];
+  }
 
-    return Array.from(
-        typeof selection === "string"
-            ? document.querySelectorAll(selection)
-            : selection
-    );
+  return Array.from(
+    typeof selection === "string"
+      ? document.querySelectorAll(selection)
+      : selection
+  );
 }
 
 type WrappedElement = Element & {
-    [key: string]: {
-        index: number;
-        prevRatio: number;
-        prevScroll: number;
-    };
+  [key: string]: {
+    index: number;
+    prevRatio: number;
+    prevScroll: number;
+  };
 };
 
 function wrapElements(
-    elements: Element[],
-    namespace: string
+  elements: Element[],
+  namespace: string
 ): WrappedElement[] {
-    return elements.map((element, index) =>
-        Object.assign(element, {
-            [namespace]: { index, prevRatio: 0, prevScroll: 0 },
-        })
-    );
+  return elements.map((element, index) =>
+    Object.assign(element, {
+      [namespace]: { index, prevRatio: 0, prevScroll: 0 },
+    })
+  );
 }
 
 type Options = {
-    range: { min?: number; max?: number; steps?: number };
-    namespace: string;
+  range: { min?: number; max?: number; steps?: number };
+  rootMargin: string;
+  namespace: string;
 };
 
 export type Handler = (
-    {
-        index,
-        enterUp,
-        leaveUp,
-        enterDown,
-        leaveDown,
-    }: {
-        index: number;
-        enterUp: boolean;
-        leaveUp: boolean;
-        enterDown: boolean;
-        leaveDown: boolean;
-    },
-    entry: IntersectionObserverEntry,
-    observer: IntersectionObserver
+  {
+    index,
+    enterUp,
+    leaveUp,
+    enterDown,
+    leaveDown,
+  }: {
+    index: number;
+    enterUp: boolean;
+    leaveUp: boolean;
+    enterDown: boolean;
+    leaveDown: boolean;
+  },
+  entry: IntersectionObserverEntry,
+  observer: IntersectionObserver
 ) => void;
 
 export class ScrollIO {
-    entries: WrappedElement[];
-    options: Options;
-    observer: IntersectionObserver;
+  entries: WrappedElement[];
+  options: Options;
+  observer: IntersectionObserver;
 
-    constructor(
-        selection: string | Element | NodeListOf<Element>,
-        public handler: Handler,
-        options: Partial<Options>
-    ) {
-        this.options = { range: {}, namespace: "_scrollio", ...options };
-        this.observer = new IntersectionObserver(this.handleIntersect, {
-            threshold: this.getThresholds(this.options.range),
-        });
-
-        this.entries = wrapElements(
-            getSelection(selection),
-            this.options.namespace
-        );
-        this.entries.forEach(entry => this.observer.observe(entry));
-    }
-
-    handleIntersect = (entries: IntersectionObserverEntry[]): void => {
-        for (const entry of entries) {
-            const target = entry.target as WrappedElement;
-
-            const currScroll = entry.boundingClientRect.top;
-            const currRatio = entry.intersectionRatio;
-
-            const { prevRatio, prevScroll } = target[this.options.namespace];
-
-            const enterUp = currScroll > prevScroll && currRatio > prevRatio;
-            const leaveUp = currScroll > prevScroll && currRatio < prevRatio;
-            const enterDown = currScroll < prevScroll && currRatio > prevRatio;
-            const leaveDown = currScroll < prevScroll && currRatio < prevRatio;
-
-            const index = target[this.options.namespace].index;
-
-            target[this.options.namespace].prevRatio = currRatio;
-            target[this.options.namespace].prevScroll = currScroll;
-
-            this.handler(
-                { index, enterUp, leaveUp, enterDown, leaveDown },
-                entry,
-                this.observer
-            );
-        }
+  constructor(
+    selection: string | Element | NodeListOf<Element>,
+    public handler: Handler,
+    options: Partial<Options>
+  ) {
+    this.options = {
+      range: {},
+      rootMargin: "0px 0px 0px 0px",
+      namespace: "_scrollio",
+      ...options,
     };
+    this.observer = new IntersectionObserver(this.handleIntersect, {
+      threshold: this.getThresholds(this.options.range),
+    });
 
-    getThresholds({ steps = 0, min = 0, max = 1 }): number[] {
-        const thresholds = [min];
+    this.entries = wrapElements(
+      getSelection(selection),
+      this.options.namespace
+    );
+    this.entries.forEach((entry) => this.observer.observe(entry));
+  }
 
-        for (let i = 1; i <= steps; i++) {
-            const range = max - min;
-            const step = i / steps;
+  handleIntersect = (entries: IntersectionObserverEntry[]): void => {
+    for (const entry of entries) {
+      const target = entry.target as WrappedElement;
 
-            thresholds.push(min + step * range);
-        }
+      const currScroll = entry.boundingClientRect.top;
+      const currRatio = entry.intersectionRatio;
 
-        return thresholds;
+      const { prevRatio, prevScroll } = target[this.options.namespace];
+
+      const enterUp = currScroll > prevScroll && currRatio > prevRatio;
+      const leaveUp = currScroll > prevScroll && currRatio < prevRatio;
+      const enterDown = currScroll < prevScroll && currRatio > prevRatio;
+      const leaveDown = currScroll < prevScroll && currRatio < prevRatio;
+
+      const index = target[this.options.namespace].index;
+
+      target[this.options.namespace].prevRatio = currRatio;
+      target[this.options.namespace].prevScroll = currScroll;
+
+      this.handler(
+        { index, enterUp, leaveUp, enterDown, leaveDown },
+        entry,
+        this.observer
+      );
+    }
+  };
+
+  getThresholds({ steps = 0, min = 0, max = 1 }): number[] {
+    const thresholds = [min];
+
+    for (let i = 1; i <= steps; i++) {
+      const range = max - min;
+      const step = i / steps;
+
+      thresholds.push(min + step * range);
     }
 
-    public disconnect(): void {
-        this.observer.disconnect();
-    }
+    return thresholds;
+  }
+
+  public disconnect(): void {
+    this.observer.disconnect();
+  }
 }
